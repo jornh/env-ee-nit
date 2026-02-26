@@ -1,0 +1,23 @@
+envs = ["dev", "prod", "foo"]
+github_org = "org"
+git_tag_transform = "v{{version}}"
+
+[[versions]]
+  app = "app-a"
+  env = "prod"
+  version = "0.1.0"
+
+[[versions]]
+  app = "app-b"
+  env = "prod"
+  version = "1.2.0"
+
+[[versions]]
+  app = "app-foo"
+  env = "foo"
+  version = "0.1.42"
+
+[[versions]]
+  app = "app-x"
+  env = "dev"
+  version = "0.1.7"

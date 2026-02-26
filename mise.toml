@@ -1,0 +1,8 @@
+[tools]
+bat = "latest"
+eza = "latest"
+fzf = "latest"
+go = "latest"
+just = "latest"
+kind = "latest"
+rg = "latest"

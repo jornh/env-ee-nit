@@ -1,0 +1,42 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-a
+  namespace: foo
+spec:
+  template:
+    spec:
+      containers:
+      - name: app-a
+        image: my-registry.io/org/app-foo:0.1.42
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-a
+  namespace: dev
+spec:
+  template:
+    spec:
+      containers:
+      - name: app-a
+        image: my-registry.io/org/app-x:0.1.7
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-a
+  namespace: foo
+spec:
+  template:
+    spec:
+      containers:
+      - name: app-a
+        image: my-registry.io/org/app-foo:0.1.42
+
+
