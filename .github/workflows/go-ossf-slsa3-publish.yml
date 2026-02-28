@@ -19,9 +19,6 @@ on:
 
 permissions: read-all
 
-env:
-  VERSION: v0.1.2
-
 jobs:
   # ========================================================================================================================================
   #     Prerequesite: Create a .slsa-goreleaser.yml in the root directory of your project.
@@ -38,4 +35,7 @@ jobs:
       # =============================================================================================================
       #     Optional: For more options, see https://github.com/slsa-framework/slsa-github-generator#golang-projects
       # =============================================================================================================
+      # Inject version from the GitHub tag
+      evaluated-envs: "VERSION:${{ github.ref_name }}"
+      ldflags: "-X main.version=${{ env.VERSION }}"
 
