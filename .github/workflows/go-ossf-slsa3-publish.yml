@@ -36,6 +36,6 @@ jobs:
       #     Optional: For more options, see https://github.com/slsa-framework/slsa-github-generator#golang-projects
       # =============================================================================================================
       # Inject version from the GitHub tag
-      # evaluated-envs: "VERSION:${{ github.ref_name }}"
-      ldflags: "-X main.version=${{ github.ref_name }}"
+      evaluated-envs: "VERSION:${{ github.ref_name }}"
+      # ldflags: "-X main.version=${{ github.ref_name }}"
 
