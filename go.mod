@@ -1,6 +1,6 @@
 module github.com/jornh/env-ee-nit
 
-go 1.25.0
+go 1.25
 
 require (
 	github.com/BurntSushi/toml v1.6.0
