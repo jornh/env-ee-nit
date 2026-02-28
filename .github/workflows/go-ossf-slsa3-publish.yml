@@ -19,6 +19,9 @@ on:
 
 permissions: read-all
 
+env:
+  VERSION: v0.1.2
+
 jobs:
   # ========================================================================================================================================
   #     Prerequesite: Create a .slsa-goreleaser.yml in the root directory of your project.
