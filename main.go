@@ -65,6 +65,8 @@ func main() {
 	}
 	cfg.Versions = append(cfg.Versions, k8sVersions...)
 
+	// Sort before persisting to keep the TOML file organized
+    cfg.SortVersions()
 
 	// 5. Save back to file
 	if err := cfg.SaveConfig(*configPath); err != nil {

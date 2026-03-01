@@ -4,6 +4,11 @@ git_tag_transform = "v{{version}}"
 
 [[versions]]
   app = "app-a"
+  env = "dev"
+  version = "0.1.7"
+
+[[versions]]
+  app = "app-a"
   env = "prod"
   version = "0.1.0"
 
@@ -16,8 +21,3 @@ git_tag_transform = "v{{version}}"
   app = "app-foo"
   env = "foo"
   version = "0.1.42"
-
-[[versions]]
-  app = "app-x"
-  env = "dev"
-  version = "0.1.7"

@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
       - name: app-a
-        image: my-registry.io/org/app-x:0.1.7
+        image: my-registry.io/org/app-a:0.1.7
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,5 +23,3 @@ spec:
       containers:
       - name: app-a
         image: my-registry.io/org/app-foo:0.1.42
-
-
