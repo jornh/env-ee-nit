@@ -13,18 +13,27 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/kubernetes/scheme"
-
 	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
 )
 
-// GetK8sClient initializes a standard kubernetes clientset
+// GetK8sClient initializes a clientset respecting the KUBECONFIG env var
 func GetK8sClient() (*kubernetes.Clientset, error) {
-	kubeconfig := filepath.Join(homedir.HomeDir(), ".kube", "config")
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
-	if err != nil {
-		return nil, err
+	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
+
+	// If KUBECONFIG is set, the loading rules automatically prioritize it.
+	// We can still manually ensure it's checked:
+	if env := os.Getenv("KUBECONFIG"); env != "" {
+		loadingRules.ExplicitPath = env
 	}
+
+	configOverrides := &clientcmd.ConfigOverrides{}
+	kubeConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, configOverrides)
+
+	config, err := kubeConfig.ClientConfig()
+	if err != nil {
+		return nil, fmt.Errorf("could not load kubeconfig: %v", err)
+	}
+
 	return kubernetes.NewForConfig(config)
 }
 
