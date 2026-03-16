@@ -18,6 +18,7 @@ type Version struct {
         App     string `toml:"app"`
         Env     string `toml:"env"`
         Version string `toml:"version"`
+        Labels  map[string]string `toml:"labels,omitempty"`
 }
 
 func main() {

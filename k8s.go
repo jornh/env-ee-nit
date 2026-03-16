@@ -88,17 +88,21 @@ func FetchVersionsFromNamespace(clientset kubernetes.Interface, namespace string
 	}
 
 	for _, d := range deps.Items {
+
 		// Taking the first container image as the source of truth for the app version
 		if len(d.Spec.Template.Spec.Containers) > 0 {
 			fullImage := d.Spec.Template.Spec.Containers[0].Image
-
-			// Parse "repo/app-name:version"
 			app, version := parseImage(fullImage)
+
+			//reconcileDisabled := d.Labels["kustomize.toolkit.fluxcd.io/reconcile"] == "disabled"
+			// labels := filterLabels(d.Labels, watchedLabels)
+			labels := d.Labels
 
 			versions = append(versions, Version{
 				App:     app,
 				Env:     namespace,
 				Version: version,
+				Labels:  labels,
 			})
 		}
 	}
