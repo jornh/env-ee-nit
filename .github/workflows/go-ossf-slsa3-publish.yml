@@ -65,3 +65,29 @@ jobs:
       #evaluated-envs: "VERSION:${{ github.ref_name }}, COMMIT:${{github.sha}}, COMMIT_DATE:${{needs.args}}"  # , COMMIT_DATE:${{g}},"
       # ldflags: "-X main.version=${{ github.ref_name }}"
 
+
+      # -------
+  publish:  
+    permissions:  
+      contents: read  
+      packages: write  
+      id-token: write  
+    needs: build  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Download binary  
+        uses: actions/download-artifact@v3  
+        with:  
+          name: binary-linux-amd64  
+          path: ./dist  
+            
+      - name: Build and publish with apko  
+        uses: chainguard-dev/actions/apko@main  
+        with:  
+          config: apko.yaml  
+          tag: ghcr.io/${{ github.repository }}:${{ github.sha }}  
+          tag-latest: true  
+          archs: amd64  
+          publish: true
+
+
