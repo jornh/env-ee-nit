@@ -57,9 +57,9 @@ jobs:
           path: ./dist
 
       - name: Build and publish with apko
-        # Updated to latest stable v1.6.15
-        uses: chainguard-dev/actions/apko@v1.6.15  # f34567890abcdef1234567890abcdef12345678 # v1.6.15
+        uses: distroless/actions/apko-publish@main
+        # was chainguard-dev/actions/apko@v1.6.15  # f34567890abcdef1234567890abcdef12345678 # v1.6.15
         with:
           config: apko.yaml
           tag: ghcr.io/${{ github.repository }}:${{ github.sha }}
-          tag-latest: true
+          #tag-latest: true
