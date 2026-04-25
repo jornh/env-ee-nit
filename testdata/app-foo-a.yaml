@@ -5,6 +5,8 @@ kind: Deployment
 metadata:
   name: app-a
   namespace: foo
+  labels:
+    kustomize.toolkit.fluxcd.io/reconcile: disabled
 spec:
   template:
     spec:
@@ -38,5 +40,3 @@ spec:
       containers:
       - name: app-a
         image: my-registry.io/org/app-foo:0.1.42
-
-

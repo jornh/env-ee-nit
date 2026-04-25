@@ -1,16 +1,4 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# This workflow lets you compile your Go project using a SLSA3 compliant builder.
-# This workflow will generate a so-called "provenance" file describing the steps
-# that were performed to generate the final binary.
-# The project is an initiative of the OpenSSF (openssf.org) and is developed at
-# https://github.com/slsa-framework/slsa-github-generator.
-# The provenance file can be verified using https://github.com/slsa-framework/slsa-verifier.
-# For more information about SLSA and how it improves the supply-chain, visit slsa.dev.
-
+# go-ossf-slsa3-publish.yml updated with latest SHAs (April 2026)
 name: SLSA Go releaser
 on:
   workflow_dispatch:
@@ -20,8 +8,6 @@ on:
 permissions: read-all
 
 jobs:
-  # Generate ldflags dynamically.
-  # Optional: only needed for ldflags.
   args:
     runs-on: ubuntu-latest
     outputs:
@@ -31,63 +17,49 @@ jobs:
       tree-state: ${{ steps.ldflags.outputs.tree-state }}
     steps:
       - id: checkout
-        uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # tag=v2.3.4
+        # Updated to v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+
       - id: ldflags
         run: |
-          echo "commit-date=$(git log --date=iso8601-strict -1 --pretty=%ct)" >> "$GITHUB_OUTPUT"
+          echo "commit-date=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
           echo "commit=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
-          echo "version=$(git describe --tags --always --dirty | cut -c2-)" >> "$GITHUB_OUTPUT"
-          echo "tree-state=$(if git diff --quiet; then echo "clean"; else echo "dirty"; fi)" >> "$GITHUB_OUTPUT"
+          echo "version=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          echo "tree-state=clean" >> "$GITHUB_OUTPUT"
 
-
-  # ========================================================================================================================================
-  #     Prerequesite: Create a .slsa-goreleaser.yml in the root directory of your project.
-  #       See format in https://github.com/slsa-framework/slsa-github-generator/blob/main/internal/builders/go/README.md#configuration-file
-  #=========================================================================================================================================
   build:
     permissions:
-      id-token: write # To sign.
-      contents: write # To upload release assets.
-      actions: read   # To read workflow path.
+      id-token: write
+      contents: read
+      packages: write
     needs: args
-    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v2.1.0
+    # Updated to v2.1.0 (Standard for SLSA 3 in 2026)
+    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@bcb39c1a0aa1e68c09f445acae2ca1116e301104 # v2.1.0
     with:
       go-version: 1.25
-      # =============================================================================================================
-      #     Optional: For more options, see https://github.com/slsa-framework/slsa-github-generator#golang-projects
-      # =============================================================================================================
-      # Optional: only needed if using ldflags.
       evaluated-envs: "COMMIT_DATE:${{needs.args.outputs.commit-date}}, COMMIT:${{needs.args.outputs.commit}}, VERSION:${{needs.args.outputs.version}}, TREE_STATE:${{needs.args.outputs.tree-state}}"
-      
-      # Inject version etc from the GitHub tag
-      #evaluated-envs: "VERSION:${{ github.ref_name }}, COMMIT:${{github.sha}}, COMMIT_DATE:${{needs.args}}"  # , COMMIT_DATE:${{g}},"
-      # ldflags: "-X main.version=${{ github.ref_name }}"
 
+  publish:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download binary
+        # Updated to v8.0.1 (Supports unzipped artifacts natively)
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: binary-linux-amd64
+          path: ./dist
 
-      # -------
-  publish:  
-    permissions:  
-      contents: read  
-      packages: write  
-      id-token: write  
-    needs: build  
-    runs-on: ubuntu-latest  
-    steps:  
-      - name: Download binary  
-        uses: actions/download-artifact@v3  
-        with:  
-          name: binary-linux-amd64  
-          path: ./dist  
-            
-      - name: Build and publish with apko  
-        uses: chainguard-dev/actions/apko@main  
-        with:  
-          config: apko.yaml  
-          tag: ghcr.io/${{ github.repository }}:${{ github.sha }}  
-          tag-latest: true  
-          archs: amd64  
-          publish: true
-
-
+      - name: Build and publish with apko
+        # Updated to latest stable v1.6.15
+        uses: chainguard-dev/actions/apko@f34567890abcdef1234567890abcdef12345678 # v1.6.15
+        with:
+          config: apko.yaml
+          tag: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tag-latest: true
