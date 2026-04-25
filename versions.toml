@@ -1,4 +1,4 @@
-envs = ["dev", "prod", "foo"]
+envs = ["dev", "prod", "foo", "env=foo"]
 github_org = "org"
 git_tag_transform = "v{{version}}"
 

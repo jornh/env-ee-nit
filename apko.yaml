@@ -1,0 +1,22 @@
+contents:
+  repositories:
+    - <https://dl-cdn.alpinelinux.org/alpine/edge/main>
+  packages:
+    - ca-certificates
+    - wolfi-base
+
+accounts:
+  groups:
+    - groupname: nonroot
+      gid: 65532
+  users:
+    - username: nonroot
+      uid: 65532
+      gid: 65532
+
+entrypoint:
+  command: /usr/bin/env-ee-nit
+
+# Optional: set environment variables
+environment:
+  VERSION: "{{ .Env.VERSION }}"

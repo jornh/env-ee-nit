@@ -2,6 +2,7 @@
 bat = "latest"
 eza = "latest"
 fzf = "latest"
+"github:jornh/env-ee-nit" = "latest"
 go = "latest"
 just = "latest"
 kind = "latest"
