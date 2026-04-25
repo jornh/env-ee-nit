@@ -27,8 +27,10 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-    - name: publish-ko
+    - name: setup-ko
       uses: ko-build/setup-ko@v0.9
+
+    - name: ko pub
       run: ko build
 
 #  publish:
