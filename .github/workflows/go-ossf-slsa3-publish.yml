@@ -36,7 +36,7 @@ jobs:
       packages: write
     needs: args
     # Updated to v2.1.0 (Standard for SLSA 3 in 2026)
-    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@bcb39c1a0aa1e68c09f445acae2ca1116e301104 # v2.1.0
+    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_go_slsa3.yml@v2.1.0 # didn't work: bcb39c1a0aa1e68c09f445acae2ca1116e301104 # v2.1.0
     with:
       go-version: 1.25
       evaluated-envs: "COMMIT_DATE:${{needs.args.outputs.commit-date}}, COMMIT:${{needs.args.outputs.commit}}, VERSION:${{needs.args.outputs.version}}, TREE_STATE:${{needs.args.outputs.tree-state}}"
