@@ -1,0 +1,8 @@
+envs = ["dev"]
+github_org = ""
+git_tag_transform = ""
+
+[[versions]]
+  app = "app-a"
+  env = "dev"
+  version = "0.1.7"
