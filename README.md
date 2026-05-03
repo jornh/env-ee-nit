@@ -2,7 +2,17 @@
 
 Companion for <https://github.com/dhth/envee/> to init (and update) the versions.toml file
 
-Queries a K8s namespace or local yaml manifests for deployments and extracts image names and tags. The `versions.toml` file is updated accordingly
+Queries a K8s namespace or local yaml manifests for deployments and extracts image names and tags. The `versions.toml` file is updated accordingly.
+
+Usage example for updating `versions.toml` directly in github:
+
+```bash
+export GH_HOST=github.mycompany.com
+export GH_TOKEN=ghp_xxx
+env-ee-nit --github=myorg/myrepo/config/versions.toml
+```
+
+Without GH_HOST the default of public GitHub is used
 
 See the justfile or executable help:
 ```bash
