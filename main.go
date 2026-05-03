@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"k8s.io/client-go/kubernetes" // This provides the Interface type
 )
 
@@ -24,8 +25,13 @@ type Version struct {
 func main() {
 	envPtr := flag.String("env", "", "The environment/namespace to refresh")
 	localDir := flag.String("local", "", "Path to local k8s yaml files (optional)")
+
 	configPath := flag.String("versions", "versions.toml", "Path to output envee versions file")
-	flag.Parse()
+	var githubSpec string
+    flag.StringVar(&githubSpec, "github", "", "Use GitHub backend: org/repo/path/to/versions.toml")
+    flag.Parse()
+
+    var store ConfigStore
 
 	if *envPtr == "" {
 		log.Fatal("Error: --env parameter is required")
@@ -47,10 +53,27 @@ func main() {
 	}
 
 	// 1. Load existing config
-	cfg, err := LoadConfig(*configPath)
-	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
-	}
+    if githubSpec != "" {
+        store, err = NewGitHubStore(githubSpec)
+        if err != nil {
+            fmt.Fprintf(os.Stderr, "GitHub store error: %v\n", err)
+            os.Exit(1)
+        }
+    } else {
+        // fallback to local file store
+        store = &FileStore{Path: *configPath}
+    }
+
+    cfg, sha, err := store.Load()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Load error: %v\n", err)
+        os.Exit(1)
+    }
+
+	// cfg, err := LoadConfig(*configPath)
+	// if err != nil {
+	// 	log.Fatalf("Failed to load config: %v", err)
+	// }
 
 	// 2. Update environment list
 	RunRefresh(cfg, *envPtr) // Clears old data for this env and adds to Envs list
@@ -70,9 +93,13 @@ func main() {
     cfg.SortVersions()
 
 	// 5. Save back to file
-	if err := cfg.SaveConfig(*configPath); err != nil {
-		log.Fatalf("Failed to save config: %v", err)
-	}
+	if err := store.Save(cfg, sha); err != nil {
+        fmt.Fprintf(os.Stderr, "Save error: %v\n", err)
+        os.Exit(1)
+    }
+	// if err := cfg.SaveConfig(*configPath); err != nil {
+	// 	log.Fatalf("Failed to save config: %v", err)
+	// }
 
 	// Accessing data
         fmt.Printf("Github Org: %s\n", cfg.GithubOrg)
