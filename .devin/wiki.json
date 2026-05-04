@@ -1,0 +1,164 @@
+{
+  "repo_notes": [
+    {
+      "content": "env-ee-nit is an adaptor between kubernetes manifests and the tool envee"
+    }
+  ],
+  "pages": [
+    {
+      "title": "Overview",
+      "purpose": "High-level introduction to env-ee-nit: what it does, why it exists, its relationship to the envee project, and a map to all child pages.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Getting Started",
+      "purpose": "Step-by-step guide for setting up the development environment, building the binary, and running the tool for the first time — covering prerequisites, mise.toml toolchain, justfile recipes, and CLI flags.",
+      "parent": "Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Core Concepts and Terminology",
+      "purpose": "Explains the key domain concepts: environments, versions, the versions.toml file, the refresh cycle, and the relationship to the envee companion project.",
+      "parent": "Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Application Architecture",
+      "purpose": "Overview of how the Go source files are organized and how they interact, linking to child pages for each major subsystem.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "CLI Entrypoint and Execution Pipeline",
+      "purpose": "Detailed walkthrough of main.go: CLI flag parsing, client selection logic, the five-phase execution pipeline (load → refresh → fetch → sort → save), and error handling.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Configuration Management",
+      "purpose": "Deep dive into config.go: the Config and Version structs, TOML serialization via BurntSushi/toml, LoadConfig and SaveConfig functions, and the versions.toml file schema.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Kubernetes Integration",
+      "purpose": "Covers k8s.go in depth: GetK8sClient (live cluster via kubeconfig), GetK8sFilesClient (fake clientset from local YAML), FetchVersionsFromNamespace, and the parseImage string-parsing logic.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Refresh and Sort Logic",
+      "purpose": "Explains refresh.go: the RunRefresh clear-and-replace pattern, environment validation, SortVersions with primary/secondary sort keys, and environment priority mapping.",
+      "parent": "Application Architecture",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Testing",
+      "purpose": "Overview of the test strategy, linking to child pages covering unit tests and golden-file integration tests.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Unit Tests",
+      "purpose": "Documents config_test.go (TestAddEnvIfMissing, TestSaveAndLoad) and k8s_test.go (TestParseImage, TestFetchVersions with fake clientset), covering test patterns and assertions.",
+      "parent": "Testing",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Golden File Integration Tests",
+      "purpose": "Explains the golden-file testing approach using testdata/: how TestFetchVersionsFromGoldenFiles works, the structure of app-a.yaml and app-foo-a.yaml, and how to add new test fixtures.",
+      "parent": "Testing",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "CI/CD and Release Pipeline",
+      "purpose": "Overview of the GitHub Actions workflows and automated dependency management, linking to child pages for each pipeline.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Continuous Integration Workflow",
+      "purpose": "Documents .github/workflows/go.yml: triggers (push/PR to main), the build job, Go version pinning, go build and go test steps, and the ubuntu-latest runner environment.",
+      "parent": "CI/CD and Release Pipeline",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "SLSA Level 3 Release Pipeline",
+      "purpose": "Documents the supply-chain security release workflow: SLSA provenance generation, the args/build job split, ldflags injection, OIDC token signing, and the .slsa-goreleaser.yml build configuration.",
+      "parent": "CI/CD and Release Pipeline",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Dependency Automation",
+      "purpose": "Covers .github/dependabot.yml configuration for weekly automated Go module updates, and the go.mod/go.sum dependency manifest structure.",
+      "parent": "CI/CD and Release Pipeline",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Glossary",
+      "purpose": "Definitions of all codebase-specific terms, abbreviations, and domain concepts that an onboarding engineer needs to know, with code pointers.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    }
+  ]
+}
