@@ -1,0 +1,25 @@
+apiVersion: batch/v1  
+kind: CronJob  
+metadata:  
+  name: env-ee-nit-refresh  
+spec:  
+  schedule: "0 * * * *"  # Every hour  
+  jobTemplate:  
+    spec:  
+      template:  
+        spec:  
+          serviceAccountName: env-ee-nit-sa  
+          containers:  
+          - name: env-ee-nit  
+            image: your-registry/env-ee-nit:latest  
+            args:  
+            - "--env=production"  
+            - "--versions=/data/versions.toml"  
+            volumeMounts:  
+            - name: data-volume  
+              mountPath: /data  
+          volumes:  
+          - name: data-volume  
+            persistentVolumeClaim:  
+              claimName: versions-pvc  
+          restartPolicy: OnFailure
